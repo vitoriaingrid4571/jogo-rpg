@@ -22,7 +22,7 @@ f5:{f:4,p:'Blackwell, Ohio. Dia 5.',t:[`O hospital aparece de madrugada, cercado
 c:[[`Atravessar o estacionamento a pé, sem fazer ruído`,`Cada passo é um segundo de eternidade. Você chega à porta pelo vão entre dois caminhões, e o Kaul puxa você para dentro.`,{s:-1}],[`Buzinar para atrair a horda e dar a volta`,`A buzina atrai tudo para o oeste. Você sacrifica a picape, e chega à porta correndo, sem nada nas mãos.`,{s:-1,d:-0}]],n:'lab'},
 
 lab:{f:4,p:'Laboratório. Dia 6.',t:[`O Dr. Okafor está exausto, mas sorri. A Maggie está na maca, pálida, com os olhos abertos. “Papai”, ela diz, e você esquece de todo o resto.`,`O procedimento leva horas: o plasma dela será separado para fazer o soro, e o seu sangue vai mantê-la de pé enquanto isso. O gerador falha duas vezes. O Kaul segura uma lanterna com as duas mãos e não treme.`,`Quando o primeiro frasco fica pronto, o Dr. Okafor olha para você: “O resto depende do quanto o senhor ainda aguenta dar.”`],
-c:[[`Dar tudo o que puder, até onde o corpo permitir`,`Você sente o mundo ficar longe, mas não solta a mão dela.`,{s:-1}],[`Dar o necessário e guardar forças para o dia seguinte`,`O processo fica mais lento, mas você continua em pé.`,{d:-1}]],n:()=>{const sc=st.d+st.s+st.k;return sc>=5?'e1':sc>=3?'e2':'e3'}},
+c:[[`Dar tudo o que puder, até onde o corpo permitir`,`Você sente o mundo ficar longe, mas não solta a mão dela.`,{s:-1}],[`Dar o necessário e guardar forças para o dia seguinte`,`O processo fica mais lento, mas você continua em pé.`,{d:-1}]],n:()=>{const sc=st.d+st.s+st.k;return sc>=9?'e1':sc>=8?'e2':'e3'}},
 
 e1:{end:1,t:`Aurora`,x:[`O soro é aplicado nos primeiros doentes ao amanhecer. Na janela do hospital, o sol nasce sobre Blackwell, e pela primeira vez em meses o rádio tem outra coisa além de chiado: vozes de cidades vizinhas, perguntando como fazer o mesmo.`,`Maggie dorme com a mão no braço do pai. O Kaul traz café para os três. Você ${'${L}'}`]},
 e2:{end:1,t:`O preço da estrada`,x:[`A cura sai do laboratório, mas o gerador não aguenta mais um dia. O Dr. Okafor e o Kaul levam os frascos que restam a pé para o norte, enquanto você fica ao lado da Maggie.`,`Ela vai se recuperar. Você, nem tanto: o sangue que deu e os quilômetros viraram uma fraqueza que não passa. Mas a cura existe, e está viajando sem você. Você ${'${L}'}`]},
@@ -49,7 +49,7 @@ function show(id,res){
   h+=`<div class="opts" id="o">`+(cur.c?cur.c.map((c,i)=>`<button data-i="${i}">${c[0]}</button>`).join(''):`<button data-i="go">${cur.b}</button>`)+`</div>`;
   view.innerHTML=h;scrollTo(0,0);
   o.onclick=e=>{
-    const b=e.target.closest('button');if(!b)return;
+    const b=e.target.closest('button');if(!b||b.dataset.i===undefined)return;
     if(b.dataset.i==='go')return show(cur.n);
     const c=cur.c[b.dataset.i],dl=c[2]||{};
     st.d+=dl.d||0;st.s=Math.max(0,Math.min(5,st.s+(dl.s||0)));st.k=Math.max(0,Math.min(5,st.k+(dl.k||0)));
@@ -60,7 +60,7 @@ function show(id,res){
     cn.onclick=()=>show(nx);cn.focus();
   };
 }
-th.onclick=()=>{const r=document.documentElement;const dark=getComputedStyle(r).getPropertyValue('--bg').trim()==='#15130f';r.dataset.theme=dark?'light':'dark'};
 const $=id=>document.getElementById(id);
 const d=$('d'),s=$('s'),k=$('k'),route=$('route'),view=$('view'),th=$('th');
+th.onclick=()=>{const r=document.documentElement;const dark=getComputedStyle(r).getPropertyValue('--bg').trim()==='#15130f';r.dataset.theme=dark?'light':'dark'};
 reset();
